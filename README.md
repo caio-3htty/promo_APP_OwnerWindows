@@ -1,4 +1,4 @@
-﻿# Promo App Owner Windows
+# Promo App Owner Windows
 
 Aplicativo desktop exclusivo do dono do Prumo.
 

@@ -1,4 +1,4 @@
-﻿name: owner-windows-ci
+name: owner-windows-ci
 
 on:
   pull_request:

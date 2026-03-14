@@ -1,4 +1,4 @@
-﻿name: owner-windows-release
+name: owner-windows-release
 
 on:
   workflow_dispatch:
