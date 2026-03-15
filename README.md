@@ -1,4 +1,4 @@
-﻿# Promo App Owner Windows
+# Promo App Owner Windows
 
 Aplicativo desktop exclusivo do dono do Prumo.
 
@@ -42,4 +42,10 @@ Artefatos em `release/`.
 ## GitHub Actions
 - `owner-windows-ci`: valida build web.
 - `owner-windows-release`: gera instalador NSIS e publica artefato no workflow.
+
+## Code Hygiene
+```bash
+npm run cleanup:analyze
+npm run cleanup:verify
+```
 
