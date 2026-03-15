@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "author": {
+    "name": "Prumo Team",
+    "email": "noreply@prumo.app"
+  },
   "main": "electron/main.cjs",
   "description": "Owner control app (Windows) for recovery and template management.",
   "engines": {
@@ -10,24 +14,27 @@
   },
   "scripts": {
     "dev": "vite",
+    "lint": "tsc --noEmit",
     "build": "vite build",
     "clean": "node scripts/clean.mjs",
     "preview": "vite preview",
     "desktop:dev": "concurrently -k \"vite\" \"wait-on tcp:5191 && electron .\"",
-    "desktop:build": "npm run build && electron-builder --win nsis --publish never"
+    "desktop:build": "npm run build && electron-builder --win nsis --publish never",
+    "cleanup:depcheck": "npx depcheck --json --ignores=typescript,wait-on",
+    "cleanup:analyze": "npx ts-prune -p tsconfig.json && npm run cleanup:depcheck",
+    "cleanup:verify": "npm run cleanup:analyze && npm run lint && npm run build && npm run desktop:build"
   },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.98.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "concurrently": "^9.2.1",
     "electron": "^37.2.6",
     "electron-builder": "^26.0.12",
+    "@supabase/supabase-js": "^2.98.0",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react-swc": "^3.11.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typescript": "^5.8.3",
     "vite": "^5.4.19",
     "wait-on": "^8.0.5"
@@ -47,6 +54,7 @@
       "target": [
         "nsis"
       ],
+      "icon": "build/icon.png",
       "artifactName": "promo-app-owner-windows-${version}-Setup.${ext}",
       "signAndEditExecutable": false
     },

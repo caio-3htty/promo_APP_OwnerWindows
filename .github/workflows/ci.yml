@@ -12,6 +12,7 @@ jobs:
     env:
       VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,9 +23,34 @@ jobs:
           node-version: 20
           cache: npm
 
+      - name: Validate required env
+        shell: bash
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ]; then
+            echo "Missing VITE_SUPABASE_URL"
+            exit 1
+          fi
+          if [ -z "$VITE_SUPABASE_ANON_KEY" ] && [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "Missing VITE_SUPABASE_ANON_KEY or VITE_SUPABASE_PUBLISHABLE_KEY"
+            exit 1
+          fi
+
       - name: Install dependencies
         run: npm ci
 
-      - name: Build web app
+      - name: Lint owner shell
+        run: npm run lint
+
+      - name: Build owner web shell
         run: npm run build
 
+      - name: Package owner installer
+        run: npm run desktop:build
+
+      - name: Upload CI installer artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: promo_APP_OwnerWindows-ci-installer
+          path: release/*.exe
+          if-no-files-found: warn
